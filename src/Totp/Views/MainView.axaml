@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Totp.ViewModels"
+             xmlns:views="clr-namespace:Totp.Views"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="500"
+             x:Class="Totp.Views.MainView"
+             x:DataType="vm:MainViewModel">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:MainViewModel />
+  </Design.DataContext>
+
+  <TabControl SelectedIndex="{Binding TabIndex}">
+    <TabItem Header="" VerticalContentAlignment="Center" IsVisible="false">
+      <StackPanel>
+        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                Command="{Binding ConfigCommand}">Configure</Button>
+        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                Command="{Binding ReloadCommand}">Reload</Button>
+        <ListBox ItemsSource="{Binding ConfigRecords}" IsVisible="{Binding HasConfigRecords}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel>
+                <TextBlock Text="{Binding Title}" Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding Code}"/>
+                <TextBlock Text="{Binding RemainingSeconds}"/>
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBlock Text="No configuration. Go Configure" IsVisible="{Binding !HasConfigRecords}"/>
+      </StackPanel>
+    </TabItem>
+    <TabItem Header="" VerticalContentAlignment="Center" IsVisible="false">
+      <StackPanel>
+        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                Command="{Binding SaveCommand}">Save</Button>
+        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                Command="{Binding CancelCommand}">Cancel</Button>
+        <TextBox Text="{Binding ConfigRecordsStringEdit, Mode=TwoWay}" AcceptsReturn="True" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+      </StackPanel>
+    </TabItem>
+  </TabControl>
+</UserControl>
